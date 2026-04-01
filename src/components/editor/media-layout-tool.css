@@ -252,3 +252,7 @@
   *:not(.ce-grid-remove):not(.react-resizable-handle) {
   cursor: grabbing;
 }
+
+.embed-tool__caption {
+  display: none !important;
+}

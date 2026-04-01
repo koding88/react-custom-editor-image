@@ -33,6 +33,23 @@ const normalizeListItem = (item: unknown): ListItemNode => {
   };
 };
 
+const getYouTubeEmbedUrl = (source?: string, embed?: string): string | null => {
+  if (typeof source === "string") {
+    const match = source.match(
+      /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)([^&?/]+)/,
+    );
+    if (match?.[1]) {
+      return `https://www.youtube-nocookie.com/embed/${match[1]}?rel=0&modestbranding=1`;
+    }
+  }
+
+  if (typeof embed === "string" && embed.length > 0) {
+    return embed.replace("https://www.youtube.com/embed/", "https://www.youtube-nocookie.com/embed/");
+  }
+
+  return null;
+};
+
 const renderListItems = (
   items: unknown[],
   style: "ordered" | "unordered" | "checklist",
@@ -176,6 +193,43 @@ export function PreviewBlocks({
               {renderListItems(items, style, blockId)}
             </div>
           );
+        }
+
+        if (block.type === "youtube" || block.type === "embed") {
+          const embedData = block.data as {
+            service?: string;
+            source?: string;
+            embed?: string;
+            caption?: string;
+          };
+
+          const youtubeUrl =
+            embedData.service === "youtube" || block.type === "youtube"
+              ? getYouTubeEmbedUrl(embedData.source, embedData.embed)
+              : null;
+
+          if (youtubeUrl) {
+            return (
+              <figure key={blockId} className="my-6">
+                <div className="overflow-hidden rounded-[24px] border border-slate-200 bg-slate-950 shadow-[0_18px_50px_rgba(15,23,42,0.14)]">
+                  <div className="relative w-full pt-[56.25%]">
+                    <iframe
+                      src={youtubeUrl}
+                      title={embedData.caption || "YouTube video"}
+                      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      className="absolute inset-0 h-full w-full border-0"
+                    />
+                  </div>
+                </div>
+                {embedData.caption ? (
+                  <figcaption className="mt-3 text-sm leading-6 text-slate-500">
+                    {renderInlineHtml(embedData.caption)}
+                  </figcaption>
+                ) : null}
+              </figure>
+            );
+          }
         }
 
         const rich = renderInlineHtml(

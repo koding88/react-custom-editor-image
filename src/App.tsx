@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import EditorJS, { type OutputData } from "@editorjs/editorjs";
+import Embed from "@editorjs/embed";
 import Header from "@editorjs/header";
 import List from "@editorjs/list";
 import MediaLayoutTool from "./components/editor/MediaLayoutBlockTool";
@@ -16,6 +17,38 @@ import type { PersistedState } from "./types/blog";
 import macbookContainer from "./assets/macbook-container.png";
 
 type AppView = "editor" | "preview";
+
+class YouTubeEmbedTool extends Embed {
+  static get toolbox() {
+    return {
+      title: "YouTube",
+      icon: `<svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M21.8 8.001a2.75 2.75 0 0 0-1.94-1.945C18.14 5.6 12 5.6 12 5.6s-6.14 0-7.86.456A2.75 2.75 0 0 0 2.2 8.001 28.27 28.27 0 0 0 1.75 12c0 1.35.15 2.686.45 3.999a2.75 2.75 0 0 0 1.94 1.945C5.86 18.4 12 18.4 12 18.4s6.14 0 7.86-.456a2.75 2.75 0 0 0 1.94-1.945c.3-1.313.45-2.649.45-3.999 0-1.35-.15-2.686-.45-3.999ZM10.1 14.9V9.1L15.2 12l-5.1 2.9Z"/></svg>`,
+    };
+  }
+
+  render() {
+    const element = super.render();
+    const caption = element.querySelector(".embed-tool__caption");
+    caption?.remove();
+    return element;
+  }
+
+  save(block: HTMLElement) {
+    const data = super.save(block) as {
+      service: string;
+      source: string;
+      embed: string;
+      width?: number;
+      height?: number;
+      caption?: string;
+    };
+
+    return {
+      ...data,
+      caption: "",
+    };
+  }
+}
 
 const safelyDestroyEditor = (instance: EditorJS | null) => {
   if (!instance) {
@@ -81,6 +114,14 @@ function App() {
         tools: {
           header: Header as unknown as EditorJS.ToolConstructable,
           list: List as unknown as EditorJS.ToolConstructable,
+          youtube: {
+            class: YouTubeEmbedTool as unknown as EditorJS.ToolConstructable,
+            config: {
+              services: {
+                youtube: true,
+              },
+            },
+          },
           mediaLayout: {
             class: MediaLayoutTool as unknown as EditorJS.ToolConstructable,
           },
