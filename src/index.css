@@ -92,6 +92,81 @@ body {
   z-index: 30;
 }
 
+.ce-inline-color-panel {
+  width: 260px;
+  padding: 0.2rem;
+}
+
+.ce-inline-color-panel__title {
+  margin-bottom: 0.55rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.ce-inline-color-panel__presets {
+  display: grid;
+  gap: 0.38rem;
+}
+
+.ce-inline-color-panel__swatch {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  width: 100%;
+  border: 0;
+  border-radius: 0.7rem;
+  background: transparent;
+  padding: 0.36rem 0.45rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.ce-inline-color-panel__swatch:hover {
+  background: #f8fafc;
+}
+
+.ce-inline-color-panel__swatch-dot {
+  width: 0.95rem;
+  height: 0.95rem;
+  flex: 0 0 auto;
+  border: 2px solid white;
+  border-radius: 999px;
+  background: var(--swatch-color);
+  box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.12);
+}
+
+.ce-inline-color-panel__swatch-label {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #334155;
+}
+
+.ce-inline-color-panel__custom {
+  display: grid;
+  gap: 0.7rem;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.ce-inline-color-panel__field {
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #475569;
+}
+
+.ce-inline-color-panel__picker {
+  width: 100%;
+  height: 2.25rem;
+  border: 1px solid #dbe2ea;
+  border-radius: 0.8rem;
+  background: white;
+  cursor: pointer;
+}
+
 .editor-canvas .ce-header {
   font-weight: 700;
   letter-spacing: -0.02em;

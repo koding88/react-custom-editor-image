@@ -10,6 +10,7 @@ const allowedTags = new Set([
   "a",
   "code",
   "mark",
+  "span",
   "br",
 ]);
 
@@ -49,6 +50,30 @@ const mapNode = (node: ChildNode, key: string): ReactNode => {
 
   if (tag === "br") {
     return createElement("br", { key });
+  }
+
+  if (tag === "span") {
+    const color = element.style.color;
+    const backgroundColor = element.style.backgroundColor;
+    const borderRadius = element.style.borderRadius;
+    const padding = element.style.padding;
+    const boxDecorationBreak = element.style.boxDecorationBreak;
+    const style =
+      color || backgroundColor
+        ? {
+            ...(color ? { color } : {}),
+            ...(backgroundColor ? { backgroundColor } : {}),
+            ...(borderRadius ? { borderRadius } : {}),
+            ...(padding ? { padding } : {}),
+            ...(boxDecorationBreak
+              ? {
+                  boxDecorationBreak,
+                  WebkitBoxDecorationBreak: boxDecorationBreak,
+                }
+              : {}),
+          }
+        : undefined;
+    return createElement("span", { key, style }, children);
   }
 
   return createElement(tag, { key }, children);

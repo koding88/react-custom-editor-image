@@ -4,6 +4,9 @@ import Embed from "@editorjs/embed";
 import Header from "@editorjs/header";
 import List from "@editorjs/list";
 import MediaLayoutTool from "./components/editor/MediaLayoutBlockTool";
+import TextColorInlineTool, {
+  HighlightInlineTool,
+} from "./components/editor/TextColorInlineTool";
 import "./components/editor/media-layout-tool.css";
 import { PreviewBlocks } from "./components/preview/PreviewBlocks";
 import { PreviewMedia } from "./components/preview/PreviewMedia";
@@ -70,6 +73,52 @@ const safelyDestroyEditor = (instance: EditorJS | null) => {
 const getViewFromHash = (): AppView =>
   window.location.hash === "#preview" ? "preview" : "editor";
 
+const installNotionPlusBehavior = (
+  editor: EditorJS,
+  holder: HTMLDivElement,
+) => {
+  let lastHandledAt = 0;
+
+  const handleToolbarClick = (event: MouseEvent) => {
+    const target = event.target;
+    if (!(target instanceof Element)) {
+      return;
+    }
+
+    const plusButton = target.closest(".ce-toolbar__plus");
+    if (!plusButton) {
+      return;
+    }
+
+    const now = performance.now();
+    if (now - lastHandledAt < 200) {
+      return;
+    }
+
+    lastHandledAt = now;
+
+    window.setTimeout(() => {
+      const currentIndex = editor.blocks.getCurrentBlockIndex();
+      if (currentIndex < 0) {
+        return;
+      }
+
+      const nextIndex = currentIndex + 1;
+      editor.blocks.insert("paragraph", {}, undefined, nextIndex, true, false);
+
+      requestAnimationFrame(() => {
+        editor.caret.setToBlock(nextIndex, "start");
+      });
+    }, 0);
+  };
+
+  holder.addEventListener("click", handleToolbarClick);
+
+  return () => {
+    holder.removeEventListener("click", handleToolbarClick);
+  };
+};
+
 function App() {
   const persisted = useMemo(() => loadPersistedState(), []);
   const initialEditorData = persisted?.content ?? initialContent;
@@ -104,6 +153,7 @@ function App() {
 
     let detached = false;
     let activeEditor: EditorJS | null = null;
+    let cleanupPlusBehavior: (() => void) | null = null;
 
     const createEditor = (data: OutputData) => {
       holderRef.current!.innerHTML = "";
@@ -114,6 +164,8 @@ function App() {
         tools: {
           header: Header as unknown as EditorJS.ToolConstructable,
           list: List as unknown as EditorJS.ToolConstructable,
+          textColor: TextColorInlineTool as unknown as EditorJS.ToolConstructable,
+          highlight: HighlightInlineTool as unknown as EditorJS.ToolConstructable,
           youtube: {
             class: YouTubeEmbedTool as unknown as EditorJS.ToolConstructable,
             config: {
@@ -145,6 +197,10 @@ function App() {
         }
         setEditorError(null);
         editorRef.current = editor;
+        cleanupPlusBehavior = installNotionPlusBehavior(
+          editor,
+          holderRef.current!,
+        );
       } catch {
         safelyDestroyEditor(activeEditor);
         activeEditor = null;
@@ -169,6 +225,7 @@ function App() {
 
     return () => {
       detached = true;
+      cleanupPlusBehavior?.();
       safelyDestroyEditor(activeEditor);
       editorRef.current = null;
     };
