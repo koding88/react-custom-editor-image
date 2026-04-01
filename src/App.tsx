@@ -375,10 +375,6 @@ function App() {
                 <h1 className="text-3xl font-semibold tracking-tight text-slate-950">
                   Blog Content Builder
                 </h1>
-                <p className="mt-2 text-sm leading-6 text-slate-600">
-                  Soan noi dung, sap xep media grid va xem truoc payload gui len
-                  backend ngay trong giao dien nay.
-                </p>
               </div>
               <div className="flex flex-wrap items-center gap-3">
                 <button
@@ -396,16 +392,6 @@ function App() {
                   Submit
                 </button>
               </div>
-            </div>
-
-            <div className="mb-5 rounded-[26px] border border-slate-200 bg-slate-50/80 p-4 md:p-5">
-              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">
-                Chi soan phan noi dung
-              </p>
-              <p className="mt-3 text-sm leading-6 text-slate-600">
-                Tieu de da duoc loai bo khoi form. Editor se tu phuc hoi neu
-                draft local cu bi loi va khong can nut reset nua.
-              </p>
             </div>
 
             {editorError ? (
