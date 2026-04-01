@@ -13,6 +13,9 @@ type PreviewBlocksProps = {
 type ListItemNode = {
   content?: string;
   items?: ListItemNode[];
+  meta?: {
+    checked?: boolean;
+  };
 };
 
 const normalizeListItem = (item: unknown): ListItemNode => {
@@ -23,19 +26,55 @@ const normalizeListItem = (item: unknown): ListItemNode => {
   return {
     content: typeof node?.content === "string" ? node.content : "",
     items: Array.isArray(node?.items) ? node.items : [],
+    meta:
+      node?.meta && typeof node.meta === "object"
+        ? { checked: node.meta.checked === true }
+        : undefined,
   };
 };
 
 const renderListItems = (
   items: unknown[],
-  ordered: boolean,
+  style: "ordered" | "unordered" | "checklist",
   blockId: string,
   depth = 0,
 ): React.ReactNode => {
-  const Tag = ordered ? "ol" : "ul";
-  const listClass = ordered
-    ? "my-4 list-decimal space-y-2 pl-6 text-slate-700 marker:text-slate-400"
-    : "my-4 list-disc space-y-2 pl-6 text-slate-700 marker:text-slate-400";
+  if (style === "checklist") {
+    return (
+      <ul className="my-4 space-y-3">
+        {items.map((item, idx) => {
+          const parsed = normalizeListItem(item);
+          const key = `${blockId}-${depth}-${idx}`;
+          return (
+            <li key={key} className="flex gap-3 text-slate-700">
+              <span
+                aria-hidden="true"
+                className={`mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-xl border text-sm ${
+                  parsed.meta?.checked
+                    ? "border-sky-500 bg-sky-500 text-white"
+                    : "border-slate-300 bg-white text-transparent"
+                }`}
+              >
+                ✓
+              </span>
+              <span className="min-w-0 flex-1">
+                {renderInlineHtml(parsed.content ?? "")}
+                {Array.isArray(parsed.items) && parsed.items.length > 0
+                  ? renderListItems(parsed.items, style, blockId, depth + 1)
+                  : null}
+              </span>
+            </li>
+          );
+        })}
+      </ul>
+    );
+  }
+
+  const Tag = style === "ordered" ? "ol" : "ul";
+  const listClass =
+    style === "ordered"
+      ? "my-4 list-decimal space-y-2 pl-6 text-slate-700 marker:text-slate-400"
+      : "my-4 list-disc space-y-2 pl-6 text-slate-700 marker:text-slate-400";
 
   return (
     <Tag className={listClass}>
@@ -46,7 +85,7 @@ const renderListItems = (
           <li key={key}>
             {renderInlineHtml(parsed.content ?? "")}
             {Array.isArray(parsed.items) && parsed.items.length > 0
-              ? renderListItems(parsed.items, ordered, blockId, depth + 1)
+              ? renderListItems(parsed.items, style, blockId, depth + 1)
               : null}
           </li>
         );
@@ -127,13 +166,14 @@ export function PreviewBlocks({
 
         if (block.type === "list") {
           const listData = block.data as {
-            style?: "ordered" | "unordered";
+            style?: "ordered" | "unordered" | "checklist";
             items?: unknown[];
           };
           const items = listData.items ?? [];
+          const style = listData.style ?? "unordered";
           return (
             <div key={blockId}>
-              {renderListItems(items, listData.style === "ordered", blockId)}
+              {renderListItems(items, style, blockId)}
             </div>
           );
         }

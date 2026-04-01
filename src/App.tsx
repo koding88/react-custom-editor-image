@@ -43,10 +43,15 @@ function App() {
   const editorRef = useRef<EditorJS | null>(null);
   const holderRef = useRef<HTMLDivElement | null>(null);
   const [content, setContent] = useState<OutputData>(initialEditorData);
+  const latestContentRef = useRef<OutputData>(initialEditorData);
   const [editorError, setEditorError] = useState<string | null>(null);
   const [submitPreviewOpen, setSubmitPreviewOpen] = useState(false);
   const [submitPayload, setSubmitPayload] = useState<string>("");
   const [view, setView] = useState<AppView>(() => getViewFromHash());
+
+  useEffect(() => {
+    latestContentRef.current = content;
+  }, [content]);
 
   useEffect(() => {
     const syncView = () => {
@@ -119,14 +124,14 @@ function App() {
       }
     };
 
-    void mountEditor(initialEditorData, true);
+    void mountEditor(latestContentRef.current, true);
 
     return () => {
       detached = true;
       safelyDestroyEditor(activeEditor);
       editorRef.current = null;
     };
-  }, [initialEditorData, view]);
+  }, [view]);
 
   useEffect(() => {
     const snapshot: PersistedState = {
@@ -144,6 +149,7 @@ function App() {
       ? await editorRef.current.save()
       : content;
     setContent(liveContent);
+    latestContentRef.current = liveContent;
     return liveContent;
   };
 
