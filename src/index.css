@@ -26,3 +26,52 @@ body {
 #root {
   min-height: 100vh;
 }
+
+.editor-canvas {
+  --editor-gutter: 3.5rem;
+  position: relative;
+}
+
+.editor-canvas .codex-editor__redactor {
+  padding-bottom: 0 !important;
+  margin-right: 0 !important;
+}
+
+.editor-canvas .ce-toolbar__content,
+.editor-canvas .ce-block__content {
+  max-width: none;
+  width: calc(100% - var(--editor-gutter));
+  margin-left: var(--editor-gutter);
+}
+
+.editor-canvas .ce-toolbar__content {
+  padding-inline-end: 0.5rem;
+}
+
+.editor-canvas .ce-popover {
+  z-index: 30;
+}
+
+@media (max-width: 768px) {
+  .editor-canvas {
+    --editor-gutter: 0;
+  }
+
+  .editor-canvas .ce-toolbar {
+    left: 0;
+    right: 0;
+  }
+
+  .editor-canvas .ce-toolbar__content,
+  .editor-canvas .ce-block__content {
+    width: 100%;
+    margin-left: 0;
+    padding-inline: 0;
+  }
+
+  .editor-canvas .ce-toolbar__plus,
+  .editor-canvas .ce-toolbar__settings-btn {
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
+  }
+}

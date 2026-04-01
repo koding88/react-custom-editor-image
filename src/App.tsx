@@ -173,7 +173,7 @@ function App() {
           ) : null}
 
           <div className="rounded-[24px] border border-slate-200 bg-gradient-to-b from-white to-slate-50 p-3 shadow-inner shadow-slate-200/60 sm:p-4">
-            <div ref={holderRef} className="min-h-96" />
+            <div ref={holderRef} className="editor-canvas min-h-96" />
           </div>
         </section>
 
