@@ -27,6 +27,46 @@ body {
   min-height: 100vh;
 }
 
+.macbook-preview-screen {
+  left: 9.2%;
+  top: 4.1%;
+  width: 81.6%;
+  height: 84.7%;
+  overflow: hidden;
+  padding: 2.4% 2% 3%;
+  border-radius: 1.8rem 1.8rem 0.75rem 0.75rem;
+}
+
+.macbook-browser-shell {
+  border-radius: 0.25rem;
+}
+
+.macbook-preview-scroll {
+  scrollbar-gutter: stable both-edges;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.9) transparent;
+}
+
+.macbook-preview-scroll::-webkit-scrollbar {
+  width: 10px;
+}
+
+.macbook-preview-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.macbook-preview-scroll::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.9);
+  background-clip: padding-box;
+}
+
+.macbook-preview-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.95);
+  background-clip: padding-box;
+}
+
 .editor-canvas {
   --editor-gutter: 3.5rem;
   position: relative;
@@ -53,6 +93,15 @@ body {
 }
 
 @media (max-width: 768px) {
+  .macbook-preview-screen {
+    left: 9.1%;
+    top: 4%;
+    width: 81.8%;
+    height: 84.9%;
+    padding: 2.5% 2.1% 3.1%;
+    border-radius: 1rem 1rem 0.5rem 0.5rem;
+  }
+
   .editor-canvas {
     --editor-gutter: 0;
   }
