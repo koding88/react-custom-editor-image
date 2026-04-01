@@ -1,0 +1,254 @@
+.ce-media-layout {
+  border: 1px solid #d7dee8;
+  border-radius: 16px;
+  background: #ffffff;
+  padding: 14px;
+}
+
+.ce-media-layout__content {
+  display: grid;
+  gap: 12px;
+}
+
+.ce-dropzone {
+  width: 100%;
+  border: 1.5px dashed #93c5fd;
+  background: linear-gradient(135deg, #eff6ff 0%, #f8fafc 100%);
+  border-radius: 14px;
+  padding: 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 180ms ease;
+}
+
+.ce-dropzone:hover {
+  border-color: #3b82f6;
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.14);
+}
+
+.ce-dropzone--active {
+  border-color: #2563eb;
+  background: linear-gradient(135deg, #dbeafe 0%, #f8fafc 100%);
+}
+
+.ce-dropzone__title {
+  display: block;
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.ce-dropzone__sub {
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+  color: #475569;
+}
+
+.ce-media-layout__message {
+  min-height: 16px;
+  font-size: 12px;
+  color: #64748b;
+  margin-bottom: 8px;
+}
+
+.ce-media-layout .react-grid-item {
+  overflow: visible;
+}
+
+.ce-media-layout .react-grid-item > .ce-grid-item {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  cursor: grab;
+}
+
+.ce-grid-overlay {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+
+.ce-grid-item::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(15, 23, 42, 0.24) 0%,
+    rgba(15, 23, 42, 0.08) 22%,
+    rgba(15, 23, 42, 0.02) 45%,
+    rgba(15, 23, 42, 0.12) 100%
+  );
+  opacity: 0;
+  transition: opacity 180ms ease;
+  z-index: 1;
+}
+
+.ce-grid-item:hover::after {
+  opacity: 1;
+}
+
+.ce-media-layout .react-grid-item.react-draggable-dragging > .ce-grid-item {
+  cursor: grabbing;
+  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.12);
+}
+
+.ce-grid-toolbar {
+  position: absolute;
+  inset: 0;
+}
+
+.ce-grid-remove {
+  pointer-events: auto;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.3);
+  backdrop-filter: blur(10px);
+  color: #fff;
+  font-size: 22px;
+  font-weight: 300;
+  line-height: 1;
+  padding: 0 0 2px;
+  opacity: 0.72;
+  cursor: pointer;
+  transition:
+    opacity 160ms ease,
+    background 160ms ease,
+    transform 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.ce-grid-remove:hover {
+  opacity: 1;
+  background: rgba(239, 68, 68, 0.92);
+  box-shadow: 0 10px 24px rgba(239, 68, 68, 0.28);
+  transform: translateY(-1px);
+}
+
+.ce-grid-media-frame {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.ce-grid-media {
+  display: block;
+  height: 100%;
+  width: 100%;
+  min-height: 0;
+  object-fit: cover;
+  transition: transform 220ms ease;
+}
+
+.ce-grid-item:hover .ce-grid-media {
+  transform: scale(1.025);
+}
+
+.ce-media-layout .react-resizable-handle {
+  z-index: 3;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  background-image: none;
+  opacity: 1;
+}
+
+.ce-media-layout .react-resizable-handle::before {
+  content: none;
+}
+
+.ce-media-layout .react-resizable-handle::after {
+  content: "";
+  position: absolute;
+  width: 13px;
+  height: 13px;
+  border-color: rgba(255, 255, 255, 0.34);
+  opacity: 1;
+  transition:
+    border-color 160ms ease,
+    opacity 160ms ease,
+    transform 160ms ease;
+}
+
+.ce-media-layout .react-resizable-handle-nw {
+  top: 8px;
+  left: 8px;
+  cursor: nwse-resize;
+}
+
+.ce-media-layout .react-resizable-handle-nw::after {
+  border-bottom-right-radius: 4px;
+}
+
+.ce-media-layout .react-resizable-handle-ne {
+  top: 8px;
+  right: 8px;
+  cursor: nesw-resize;
+}
+
+.ce-media-layout .react-resizable-handle-ne::after {
+  border-bottom-right-radius: 4px;
+}
+
+.ce-media-layout .react-resizable-handle-sw {
+  bottom: 8px;
+  left: 8px;
+  cursor: nesw-resize;
+}
+
+.ce-media-layout .react-resizable-handle-sw::after {
+  border-bottom-right-radius: 4px;
+}
+
+.ce-media-layout .react-resizable-handle-se {
+  right: 8px;
+  bottom: 8px;
+  cursor: nwse-resize;
+}
+
+.ce-media-layout .react-resizable-handle-se::after {
+  right: 5px;
+  bottom: 5px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.34);
+  border-right: 2px solid rgba(255, 255, 255, 0.34);
+  border-bottom-right-radius: 4px;
+}
+
+.ce-grid-item:hover .react-resizable-handle::after {
+  border-color: rgba(255, 255, 255, 1);
+  transform: scale(1.04);
+}
+
+.ce-media-layout .react-grid-item > .ce-grid-item,
+.ce-media-layout
+  .react-grid-item
+  > .ce-grid-item
+  *:not(.ce-grid-remove):not(.react-resizable-handle) {
+  cursor: grab;
+}
+
+.ce-media-layout .react-grid-item.react-draggable-dragging > .ce-grid-item,
+.ce-media-layout
+  .react-grid-item.react-draggable-dragging
+  > .ce-grid-item
+  *:not(.ce-grid-remove):not(.react-resizable-handle) {
+  cursor: grabbing;
+}
